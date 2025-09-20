@@ -166,20 +166,20 @@ def get_bp_centile(bp_value: float, df: pd.DataFrame, height_centile: int) -> tu
 
     # below 5th centile
     if bp_value < values[0]:
-        return f"Below <b>{centiles[0]}th</b> centile (value: {values[0]} mm Hg)", centiles[0], values[0]
+        return f"Below {centiles[0]}th centile (value: {values[0]} mm Hg)", centiles[0], values[0]
 
     # exact match
     if bp_value in values:
         idx = values.index(bp_value)
-        return f"At <b>{centiles[idx]}th</b> centile (value: {values[idx]} mm Hg)", centiles[idx], values[idx]
+        return f"At {centiles[idx]}th centile (value: {values[idx]} mm Hg)", centiles[idx], values[idx]
 
     # in between
     for i in range(len(values)-1):
         if values[i] < bp_value < values[i+1]:
-            return f"Between <b>{centiles[i]}th</b> (value: {values[i]} mm Hg) and <b>{centiles[i+1]}th</b> (value: {values[i+1]} mm Hg)", centiles[i], values[i]
+            return f"Between {centiles[i]}th (value: {values[i]} mm Hg) and {centiles[i+1]}th (value: {values[i+1]} mm Hg)", centiles[i], values[i]
 
     # above
-    return f"Above <b>{centiles[-1]}th</b> centile (value: {values[-1]} mm Hg)", centiles[-1], values[-1]
+    return f"Above {centiles[-1]}th centile (value: {values[-1]} mm Hg)", centiles[-1], values[-1]
 
 
 def classify_bp(sbp, dbp, sbp_info, dbp_info):
