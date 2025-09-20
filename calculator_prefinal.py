@@ -225,6 +225,23 @@ if height_results:
         # Classification
         final_class = classify_bp(sbp, dbp, (sbp_result, sbp_centile, sbp_ref), (dbp_result, dbp_centile, dbp_ref))
 
+        # --- Hypotension logic override ---
+age_years = rounded_age  # already rounded from get_height_centiles
+hypotension_text = None
+
+# PALS 2024 hypotension: SBP
+if 1 <= age_years < 10 and sbp < (2 * age_years + 70):
+    hypotension_text = "Hypotension (PALS 2024 Algorithm)"
+elif age_years > 10 and sbp < sbp_ref:  # sbp_ref is 5th centile
+    hypotension_text = "Hypotension (PALS 2024 Algorithm)"
+# DBP < 5th centile in isolation
+elif dbp < dbp_ref:
+    hypotension_text = "?Hypotension"
+
+if hypotension_text:
+    final_class = hypotension_text
+
+
         # Color box display
         if final_class == "Normal BP" or final_class == "Hypotension?":
             color = "#90EE90"  # light green
