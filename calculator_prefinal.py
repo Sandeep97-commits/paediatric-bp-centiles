@@ -67,19 +67,23 @@ def create_pdf(age, gender, height, sbp, dbp, map_val,
     # Calculate usable width = page width - 2 × left margin
     usable_width = pdf.w - 2 * pdf.l_margin
 
+    label_width = 25  # keeps SBP/DBP aligned
+    text_width = usable_width - label_width
+
     # SBP line
     pdf.set_font("Arial", 'B', 12)
-    pdf.multi_cell(usable_width, 10, f"SBP:", align="L")
+    pdf.cell(label_width, 10, "SBP:", ln=0)
     pdf.set_font("Arial", size=12)
-    pdf.multi_cell(usable_width, 10, f"{sbp_result} (adjusted for height, age and gender).", align="L")
+    pdf.multi_cell(text_width, 10, f"{sbp_result} (adjusted for height, age and gender).", align="L")
 
-    # DBP line
+    # DBP line (force new line with ln=1)
     pdf.set_font("Arial", 'B', 12)
-    pdf.multi_cell(usable_width, 10, f"DBP:", align="L")
+    pdf.cell(label_width, 10, "DBP:", ln=1)  # <--- change here
     pdf.set_font("Arial", size=12)
-    pdf.multi_cell(usable_width, 10, f"{dbp_result} (adjusted for height, age and gender).", align="L")
+    pdf.multi_cell(text_width, 10, f"{dbp_result} (adjusted for height, age and gender).", align="L")
 
     pdf.ln(10)
+
 
     # References
     pdf.set_font("Arial", 'B', 14)
