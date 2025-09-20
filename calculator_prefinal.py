@@ -262,6 +262,17 @@ if height_results:
             "</div>",
             unsafe_allow_html=True,
         )
+            # --- Calculate MAP ---
+        map_value = dbp + (sbp - dbp) / 3
+
+          # --- Display MAP in blue box ---
+        st.markdown(
+            f"<div style='background-color:#ADD8E6; padding:15px; border-radius:10px; text-align:center;'>"
+            f"<span style='font-size:20px; font-weight:bold; color:black;'>Mean Arterial Pressure (MAP): {map_value:.1f} mm Hg</span>"
+            "</div>",
+            unsafe_allow_html=True,
+        )
+
         st.markdown("---")
         st.markdown(
             "**References:** [AAP Clinical Practice Guideline for Screening and Diagnosis](https://publications.aap.org/pediatrics/article/140/3/e20171904/38358/Clinical-Practice-Guideline-for-Screening-and?autologincheck=redirected)",
