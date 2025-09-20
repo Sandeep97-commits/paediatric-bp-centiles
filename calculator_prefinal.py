@@ -44,9 +44,22 @@ def create_pdf(age, gender, height, sbp, dbp, map_val,
         pdf.cell(50, 10, f"{heading}:", ln=0)
         pdf.set_font("Arial", size=12)
         pdf.cell(0, 10, str(value), ln=1)
+    if age_input_method == "Age in years (decimal)":
+        age_for_pdf = f"{age:.2f} years"
+    else:
+        years = age_days // 365
+        months = (age_days % 365) // 30
+        days = (age_days % 365) % 30
+        age_for_pdf = f"{years} y {months} m {days} d"
 
+    # then in your PDF:
+    def add_field(heading, value):
+        pdf.set_font("Arial", 'B', 14)
+        pdf.cell(50, 10, f"{heading}:", ln=0)
+        pdf.set_font("Arial", size=12)
+        pdf.cell(0, 10, str(value), ln=1)
     # Core values
-    add_field("Age in years", age)
+    add_field("Age in years", age_for_pdf)
     add_field("Gender", gender)
     add_field("Height", f"{height:.1f} cm")
     add_field("SBP", f"{sbp:.1f} mmHg")
