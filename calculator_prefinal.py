@@ -242,15 +242,18 @@ if height_results:
            final_class = hypotension_text
 
 
-        # Color box display
-        if final_class == "Normal BP" or final_class == "Hypotension?":
+            # Color box display
+        if final_class.startswith("Hypotension") or final_class == "?Hypotension":
+            color = "orange"
+        elif final_class == "Normal BP":
             color = "#90EE90"  # light green
         elif final_class == "Elevated BP":
             color = "#FFFF99"  # yellow
         elif final_class == "Stage 1 HTN":
             color = "#FF9999"  # light red
         else:
-            color = "#FF4C4C"  # darker red for Stage 2
+            color = "#FF4C4C"  # Stage 2 #Dark Red
+
 
         st.markdown(
             f"<div style='background-color:{color}; padding:15px; border-radius:10px; text-align:center;'>"
