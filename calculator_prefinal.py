@@ -77,7 +77,12 @@ def create_pdf(age, gender, height, sbp, dbp, map_val,
         "- PALS 2024 Algorithm (American Heart Association)"
     )
 
-    return bytes(pdf.output(dest="S"), "latin-1")
+    import io
+
+    pdf_buffer = io.BytesIO()
+    pdf.output(pdf_buffer)
+    pdf_buffer.seek(0)
+    return pdf_buffer.getvalue()
 
 # ---------------- Data Loader ----------------
 @st.cache_data
