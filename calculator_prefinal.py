@@ -276,7 +276,7 @@ if height_results:
          # ---------------- References (moved outside loop, at bottom) ----------------
         st.markdown("----")  # longer separator to push it down visually
         st.subheader("References")
-               st.markdown(
+        st.markdown(
             """
         - [AAP Clinical Practice Guideline for Screening and Diagnosis](https://publications.aap.org/pediatrics/article/140/3/e20171904/38358/Clinical-Practice-Guideline-for-Screening-and?autologincheck=redirected)  
         - [PALS 2024 Algorithm](https://www.acls-pals-bls.com/algorithms/pals/)
