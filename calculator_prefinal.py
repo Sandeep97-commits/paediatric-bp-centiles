@@ -258,7 +258,7 @@ if height_results:
         aap_tag = " (AAP 2017)" if not final_class.startswith("Hypotension") and final_class != "?Hypotension" else ""
         st.markdown(
             f"<div style='background-color:{color}; padding:15px; border-radius:10px; text-align:center;'>"
-            f"<span style='font-size:20px; font-weight:bold; color:black;'>{final_class} (aap_tag)</span>"
+            f"<span style='font-size:20px; font-weight:bold; color:black;'>{final_class} {aap_tag}</span>"
             "</div>",
             unsafe_allow_html=True,
         )
