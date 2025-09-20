@@ -78,10 +78,6 @@ def create_pdf(age, gender, height, sbp, dbp, map_val,
 
     pdf.ln(10)
 
-    pdf.set_font("Arial", size=12)
-    pdf.multi_cell(0, 10, f"{dbp_result} (adjusted for height, age and gender).", align="L")
-
-
     # References
     pdf.set_font("Arial", 'B', 14)
     pdf.cell(200, 10, "References", ln=True)
