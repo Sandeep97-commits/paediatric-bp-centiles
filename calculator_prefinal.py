@@ -103,7 +103,7 @@ def classify_bp(sbp, dbp, sbp_info, dbp_info):
     dbp_class = classify_single(dbp, dbp_info[1], dbp_info[2])
 
     # take worst of SBP/DBP
-    severity_order = ["Hypotension?", "Normal", "Elevated", "Stage 1 HTN", "Stage 2 HTN"]
+    severity_order = ["Hypotension?", "Normal BP", "Elevated BP", "Stage 1 HTN", "Stage 2 HTN"]
     final_class = max([sbp_class, dbp_class], key=lambda x: severity_order.index(x))
     return final_class
 
