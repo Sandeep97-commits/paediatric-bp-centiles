@@ -72,14 +72,15 @@ def create_pdf(age, gender, height, sbp, dbp, map_val,
 
     # SBP line
     pdf.set_font("Arial", 'B', 12)
-    pdf.cell(label_width, 10, "SBP:", ln=0)
+    pdf.cell(label_width, 10, "SBP:", ln=1)
     pdf.set_font("Arial", size=12)
     pdf.multi_cell(text_width, 10, f"{sbp_result} (adjusted for height, age and gender).", align="L")
+    pdf.ln(2)
 
     pdf.set_font("Arial", 'B', 12)
-    pdf.multi_cell(0, 10, f"DBP: ", align="L")   # force DBP to start at margin
+    pdf.cell(label_width, 10, "DBP:", ln=1)
     pdf.set_font("Arial", size=12)
-    pdf.multi_cell(0, 10, f"{dbp_result} (adjusted for height, age and gender).", align="L")
+    pdf.multi_cell(text_width, 10, f"{sbp_result} (adjusted for height, age and gender).", align="L")
     pdf.ln(10)
 
     # References
