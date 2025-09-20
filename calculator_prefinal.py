@@ -65,14 +65,12 @@ def create_pdf(age, gender, height, sbp, dbp, map_val,
     pdf.set_font("Arial", 'B', 12)  # bold for heading
     pdf.cell(20, 10, "SBP:", ln=0)  # print SBP label
     pdf.set_font("Arial", size=12)  # normal for value
-    pdf.cell(0, 10, f"{sbp_result} (adjusted for height, age and gender).", ln=1)
-
+    pdf.multi_cell(0, 10, f"{sbp_result} (adjusted for height, age and gender).", align="L")
     # DBP
     pdf.set_font("Arial", 'B', 12)  # bold for heading
     pdf.cell(20, 10, "DBP:", ln=0)  # print DBP label
     pdf.set_font("Arial", size=12)  # normal for value
-    pdf.cell(0, 10, f"{dbp_result} (adjusted for height, age and gender).", ln=1)
-
+    pdf.multi_cell(0, 10, f"{dbp_result} (adjusted for height, age and gender).", align="L")
     pdf.ln(10)
 
     # References
