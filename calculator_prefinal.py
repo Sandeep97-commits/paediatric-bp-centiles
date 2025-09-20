@@ -157,7 +157,7 @@ def get_height_centiles(age, gender, height, boys_df, girls_df):
     return list(zip(closest_centiles, closest_heights)), int(closest_age)
 
 def get_bp_centile(bp_value: float, df: pd.DataFrame, height_centile: int) -> tuple:
-   col = str(height_centile)
+    col = str(height_centile)
     if col not in df.columns:
         pdf.set_font("Arial", size=12)
         pdf.cell(0, 10, f"Height centile {col} not in table", ln=1)
