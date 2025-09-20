@@ -157,51 +157,29 @@ def get_height_centiles(age, gender, height, boys_df, girls_df):
     return list(zip(closest_centiles, closest_heights)), int(closest_age)
 
 def get_bp_centile(bp_value: float, df: pd.DataFrame, height_centile: int) -> tuple:
+    """Return centile description and numeric band (for classification)"""
     col = str(height_centile)
     if col not in df.columns:
-        pdf.set_font("Arial", size=12)
-        pdf.cell(0, 10, f"Height centile {col} not in table", ln=1)
-        return
-
-    centiles = df.index.astype(int).tolist()  # integers for ordinals
+        return f"Height centile {col} not in table", None, None
+    centiles = df.index.astype(float).tolist()
     values = df[col].astype(float).tolist()
 
-    def centile_text(n):
-        return f"{n}st" if n == 1 else f"{n}th"
-
-    # Determine the text parts
+    # below 5th centile
     if bp_value < values[0]:
-        label, cent, rest = "Below ", centile_text(centiles[0]), f" centile (value: {values[0]} mm Hg)"
-    elif bp_value in values:
+        return f"Below <b>{centiles[0]}th</b> centile (value: {values[0]} mm Hg)", centiles[0], values[0]
+
+    # exact match
+    if bp_value in values:
         idx = values.index(bp_value)
-        label, cent, rest = "At ", centile_text(centiles[idx]), f" centile (value: {values[idx]} mm Hg)"
-    else:
-        for i in range(len(values)-1):
-            if values[i] < bp_value < values[i+1]:
-                label = f"Between "
-                cent = centile_text(centiles[i])
-                rest = f" (value: {values[i]} mm Hg) and {centile_text(centiles[i+1])} (value: {values[i+1]} mm Hg)"
-                # We'll handle the second centile bold separately
-                second_centile = centile_text(centiles[i+1])
-                break
-        else:  # above highest
-            label, cent, rest = "Above ", centile_text(centiles[-1]), f" centile (value: {values[-1]} mm Hg)"
+        return f"At <b>{centiles[idx]}th</b> centile (value: {values[idx]} mm Hg)", centiles[idx], values[idx]
 
-    # --- Print in PDF ---
-    pdf.set_font("Arial", size=12)
-    pdf.cell(20, 10, label, ln=0)                # normal text
-    pdf.set_font("Arial", 'B', 12)
-    pdf.cell(15, 10, cent, ln=0)                 # bold centile
-    pdf.set_font("Arial", size=12)
-    if 'second_centile' in locals():             # in between case
-        pdf.cell(0, 10, rest.split(second_centile)[0], ln=0)
-        pdf.set_font("Arial", 'B', 12)
-        pdf.cell(15, 10, second_centile, ln=0)  # second centile bold
-        pdf.set_font("Arial", size=12)
-        pdf.cell(0, 10, rest.split(second_centile)[1], ln=1)
-    else:
-        pdf.cell(0, 10, rest, ln=1)
+    # in between
+    for i in range(len(values)-1):
+        if values[i] < bp_value < values[i+1]:
+            return f"Between <b>{centiles[i]}th</b> (value: {values[i]} mm Hg) and <b>{centiles[i+1]}th</b> (value: {values[i+1]} mm Hg)", centiles[i], values[i]
 
+    # above
+    return f"Above <b>{centiles[-1]}th</b> centile (value: {values[-1]} mm Hg)", centiles[-1], values[-1]
 
 
 def classify_bp(sbp, dbp, sbp_info, dbp_info):
