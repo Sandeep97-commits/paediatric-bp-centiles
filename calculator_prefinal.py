@@ -46,7 +46,7 @@ def create_pdf(age, gender, height, sbp, dbp, map_val,
         pdf.cell(0, 10, str(value), ln=1)
 
     # Core values
-    add_field("Age", age)
+    add_field("Age in years", age)
     add_field("Gender", gender)
     add_field("Height", f"{height:.1f} cm")
     add_field("SBP", f"{sbp:.1f} mmHg")
