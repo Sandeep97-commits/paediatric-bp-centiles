@@ -82,9 +82,6 @@ def classify_bp(sbp, dbp, sbp_info, dbp_info):
         if centile is None:
             return "Unknown"
 
-        if bp_value < ref_value and centile <= 5:
-            return "Hypotension?"
-
         if centile < 90:
             return "Normal BP"
 
