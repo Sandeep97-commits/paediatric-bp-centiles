@@ -156,35 +156,31 @@ def get_height_centiles(age, gender, height, boys_df, girls_df):
     closest_heights = [row[c] for c in closest_centiles]
     return list(zip(closest_centiles, closest_heights)), int(closest_age)
 
-def get_bp_centile_html(bp_value: float, df: pd.DataFrame, height_centile: int) -> tuple:
-    """Return centile description (HTML) and numeric band for classification"""
+def get_bp_centile(bp_value: float, df: pd.DataFrame, height_centile: int) -> tuple:
+    """Return centile description and numeric band (for classification)"""
     col = str(height_centile)
     if col not in df.columns:
         return f"Height centile {col} not in table", None, None
-    
-    centiles = df.index.astype(int).tolist()
+    centiles = df.index.astype(float).tolist()
     values = df[col].astype(float).tolist()
 
-    def centile_text(n):
-        return f"{n}st" if n == 1 else f"{n}th"
-
-    # below lowest centile
+    # below 5th centile
     if bp_value < values[0]:
-        return f"Below <b>{centile_text(centiles[0])}</b> centile (value: {values[0]} mm Hg)", centiles[0], values[0]
+        return f"Below <b>{centiles[0]}th</b> centile (value: {values[0]} mm Hg)", centiles[0], values[0]
 
     # exact match
     if bp_value in values:
         idx = values.index(bp_value)
-        return f"At <b>{centile_text(centiles[idx])}</b> centile (value: {values[idx]} mm Hg)", centiles[idx], values[idx]
+        return f"At <b>{centiles[idx]}th</b> centile (value: {values[idx]} mm Hg)", centiles[idx], values[idx]
 
     # in between
     for i in range(len(values)-1):
         if values[i] < bp_value < values[i+1]:
-            return (f"Between <b>{centile_text(centiles[i])}</b> (value: {values[i]} mm Hg) "
-                    f"and <b>{centile_text(centiles[i+1])}</b> (value: {values[i+1]} mm Hg)"), centiles[i], values[i]
+            return f"Between <b>{centiles[i]}th</b> (value: {values[i]} mm Hg) and <b>{centiles[i+1]}th</b> (value: {values[i+1]} mm Hg)", centiles[i], values[i]
 
-    # above highest
-    return f"Above <b>{centile_text(centiles[-1])}</b> centile (value: {values[-1]} mm Hg)", centiles[-1], values[-1]
+    # above
+    return f"Above <b>{centiles[-1]}th</b> centile (value: {values[-1]} mm Hg)", centiles[-1], values[-1]
+
 
 
 def classify_bp(sbp, dbp, sbp_info, dbp_info):
