@@ -55,11 +55,23 @@ def create_pdf(age, gender, height, sbp, dbp, map_val,
     pdf.ln(5)
 
     # Classification
+    # --- Determine color based on classification ---
+    if final_class.startswith("Hypotension") or final_class == "?Hypotension":
+        pdf.set_fill_color(255, 165, 0)  # orange
+    elif final_class == "Normal BP":
+        pdf.set_fill_color(144, 238, 144)  # light green
+    elif final_class == "Elevated BP":
+        pdf.set_fill_color(255, 255, 153)  # yellow
+    elif final_class == "Stage 1 HTN":
+        pdf.set_fill_color(255, 153, 153)  # light red
+    else:
+        pdf.set_fill_color(255, 76, 76)  # Stage 2 Dark Red
+
+    # --- Display classification in a filled box ---
     pdf.set_font("Arial", 'B', 14)
-    pdf.cell(200, 10, "Classification:", ln=True)
-    pdf.set_font("Arial", size=12)
-    pdf.multi_cell(0, 10, final_class)
-    pdf.ln(5)
+    pdf.cell(0, 12, final_class, ln=1, align='C', fill=True)  # ln=1 moves to next line
+    pdf.ln(5)  # optional space after box
+
 
     # Centile notes (with adjustment note)
     pdf.set_font("Arial", size=12)
