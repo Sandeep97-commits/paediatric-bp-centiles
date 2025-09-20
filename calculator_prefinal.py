@@ -229,9 +229,9 @@ if height_results:
         final_class = classify_bp(sbp, dbp, (sbp_result, sbp_centile, sbp_ref), (dbp_result, dbp_centile, dbp_ref))
 
         # Color box display
-        if final_class == "Normal" or final_class == "Hypotension?":
+        if final_class == "Normal BP" or final_class == "Hypotension?":
             color = "#90EE90"  # light green
-        elif final_class == "Elevated":
+        elif final_class == "Elevated BP":
             color = "#FFFF99"  # yellow
         elif final_class == "Stage 1 HTN":
             color = "#FF9999"  # light red
