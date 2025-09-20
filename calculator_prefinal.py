@@ -7,6 +7,78 @@ import streamlit as st
 import pandas as pd
 from datetime import date, datetime
 
+from fpdf import FPDF
+import pytz, random, string
+
+def create_pdf(age, gender, height, sbp, dbp, map_val,
+               final_class, sbp_result, dbp_result):
+    # Patient ID
+    patient_id = random.choice(string.ascii_uppercase)
+
+    # Current IST date & time
+    ist = pytz.timezone("Asia/Kolkata")
+    now = datetime.now(ist)
+    date_str = now.strftime("%d-%m-%Y %H:%M IST")
+
+    # Initialize PDF
+    pdf = FPDF()
+    pdf.add_page()
+
+    # Title
+    pdf.set_font("Arial", 'B', 18)
+    pdf.cell(200, 10, "Paediatric BP Centile Report", ln=True, align="C")
+
+    # Date top right
+    pdf.set_font("Arial", size=10)
+    pdf.cell(0, 10, date_str, align="R", ln=True)
+    pdf.ln(5)
+
+    # Patient ID
+    pdf.set_font("Arial", 'B', 14)
+    pdf.cell(200, 10, f"Patient: {patient_id}", ln=True)
+    pdf.ln(5)
+
+    # Helper for headings
+    def add_field(heading, value):
+        pdf.set_font("Arial", 'B', 14)
+        pdf.cell(50, 10, f"{heading}:", ln=0)
+        pdf.set_font("Arial", size=12)
+        pdf.cell(0, 10, str(value), ln=1)
+
+    # Core values
+    add_field("Age", age)
+    add_field("Gender", gender)
+    add_field("Height", f"{height:.1f} cm")
+    add_field("SBP", f"{sbp:.1f} mmHg")
+    add_field("DBP", f"{dbp:.1f} mmHg")
+    add_field("MAP", f"{map_val:.1f} mmHg")
+    pdf.ln(5)
+
+    # Classification
+    pdf.set_font("Arial", 'B', 14)
+    pdf.cell(200, 10, "Classification:", ln=True)
+    pdf.set_font("Arial", size=12)
+    pdf.multi_cell(0, 10, final_class)
+    pdf.ln(5)
+
+    # Centile notes (with adjustment note)
+    pdf.set_font("Arial", size=12)
+    pdf.multi_cell(0, 10, f"SBP: {sbp_result} (adjusted for height, age and gender).")
+    pdf.multi_cell(0, 10, f"DBP: {dbp_result} (adjusted for height, age and gender).")
+    pdf.ln(10)
+
+    # References
+    pdf.set_font("Arial", 'B', 14)
+    pdf.cell(200, 10, "References", ln=True)
+    pdf.set_font("Arial", size=10)
+    pdf.multi_cell(0, 8,
+        "- AAP Clinical Practice Guideline for Screening and Diagnosis "
+        "(Pediatrics. 2017;140(3):e20171904)\n"
+        "- PALS 2024 Algorithm (American Heart Association)"
+    )
+
+    return pdf.output(dest="S").encode("latin-1")
+
 # ---------------- Data Loader ----------------
 @st.cache_data
 def load_height_csv(path):
@@ -272,6 +344,19 @@ if height_results:
             "</div>",
             unsafe_allow_html=True,
         )
+        # --- PDF Export Button ---
+        if st.button("Generate PDF Report"):
+            pdf_bytes = create_pdf(
+                age, gender, height, sbp, dbp, map_value,
+                final_class, sbp_result, dbp_result
+            )
+            st.download_button(
+                label="📄 Download Patient Report",
+                data=pdf_bytes,
+                file_name="bp_report.pdf",
+                mime="application/pdf",
+            )
+
 
          # ---------------- References (moved outside loop, at bottom) ----------------
         st.markdown("---------------")  # longer separator to push it down visually
