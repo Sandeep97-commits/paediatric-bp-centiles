@@ -62,16 +62,19 @@ def create_pdf(age, gender, height, sbp, dbp, map_val,
     pdf.ln(5)
 
     # Centile notes (with adjustment note)
-    pdf.set_font("Arial", 'B', 12)  # bold for heading
-    pdf.cell(20, 10, "SBP:", ln=0)  # print SBP label
-    pdf.set_font("Arial", size=12)  # normal for value
+    pdf.set_font("Arial", 'B', 12)
+    pdf.multi_cell(0, 10, "SBP:", align="L")
+
+    pdf.set_font("Arial", size=12)
     pdf.multi_cell(0, 10, f"{sbp_result} (adjusted for height, age and gender).", align="L")
+
     # DBP
-    pdf.set_font("Arial", 'B', 12)  # bold for heading
-    pdf.cell(20, 10, "DBP:", ln=0)  # print DBP label
-    pdf.set_font("Arial", size=12)  # normal for value
+    pdf.set_font("Arial", 'B', 12)
+    pdf.multi_cell(0, 10, "DBP:", align="L")
+
+    pdf.set_font("Arial", size=12)
     pdf.multi_cell(0, 10, f"{dbp_result} (adjusted for height, age and gender).", align="L")
-    pdf.ln(10)
+
 
     # References
     pdf.set_font("Arial", 'B', 14)
