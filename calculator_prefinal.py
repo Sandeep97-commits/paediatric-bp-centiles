@@ -196,7 +196,7 @@ dbp = st.number_input("Diastolic BP (DBP, mm Hg):", min_value=30.0, max_value=13
 
 # Load height tables
 boys_df = load_height_csv(os.path.join(DATA_DIR, "height_boys.csv"))
-girls_df = load_height_csv(os.path.join(DATA_DIR, "height_girls.csv"))
+girls_df = load_height_csv(os.path.join(DATA_DIR, "Height_girls.csv"))
 
 # Process
 height_results, rounded_age = get_height_centiles(age, gender, height, boys_df, girls_df)
